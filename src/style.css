@@ -1,0 +1,9 @@
+:root {
+  max-width: 1440px;
+  margin: 0 auto;
+  padding: 25px;
+}
+
+body {
+  font-family: "Roboto", sans-serif;
+}
