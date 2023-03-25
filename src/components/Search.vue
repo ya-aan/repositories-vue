@@ -1,26 +1,30 @@
 <script setup>
 import { ref } from "vue";
-
 import search from "../assets/search.svg";
 
-const searchValue = ref("");
+const emit = defineEmits(["search"]);
+
+const searchQuery = ref("");
+
+function searchRepositories() {
+  emit("search", searchQuery.value);
+}
 </script>
 <template>
-  <div class="search__container">
+  <form class="search__container" @submit.prevent="searchRepositories">
     <div class="search__wrapper">
       <input
-        v-model="searchValue"
+        v-model="searchQuery"
         type="text"
         class="input__search"
         placeholder="Начните вводить текст для поиска (не менее трех символов)"
       />
 
-      <button class="button__search" @click="loadRepositories">
+      <button class="button__search" type="submit">
         <img :src="search" alt="Magnifier" />
       </button>
     </div>
-    <div>{{ searchValue }}</div>
-  </div>
+  </form>
 </template>
 
 <style lang="css" scoped>

@@ -6,14 +6,23 @@ export const useSearchStore = defineStore("search", {
     return {
       items: [],
       total_count: [],
+      searchQuery: "",
     };
+  },
+
+  getters: {
+    filteredItem() {
+      return this.items.slice(0, 6);
+    },
   },
 
   actions: {
     async loadRepositories() {
       try {
         const response = await axios.get(
-          "https://api.github.com/search/repositories?q=subject"
+          `https://api.github.com/search/repositories?q=${
+            this.searchQuery.length > 0 ? this.searchQuery : "subject"
+          }`
         );
         console.log(response);
         console.log(response.data.items);
