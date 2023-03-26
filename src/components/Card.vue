@@ -1,10 +1,17 @@
 <script setup>
+import { computed } from "@vue/reactivity";
 import star from "../assets/star.svg";
 import eay from "../assets/eay.svg";
 import pencil from "../assets/pencil.svg";
 
 const props = defineProps({
   item: { type: Object, required: true },
+});
+
+const avatarSubject = computed(() => {
+  if (props.item.owner.avatar_url === undefined) {
+    return "Not found";
+  }
 });
 </script>
 <template>
@@ -14,10 +21,10 @@ const props = defineProps({
       <div class="wrapper__avatar">
         <img
           class="avatar__img"
-          :src="props.item.owner.avatar_url"
+          :src="props.item.owner?.avatar_url"
           alt="avatar"
         />
-        <span class="avatar__text">{{ props.item.owner.login }}</span>
+        <span class="avatar__text">{{ props.item.owner?.login }}</span>
       </div>
       <div class="wrapper__watches">
         <img class="watches__img" :src="star" alt="star" />
