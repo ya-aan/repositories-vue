@@ -7,12 +7,6 @@ import pencil from "../assets/pencil.svg";
 const props = defineProps({
   item: { type: Object, required: true },
 });
-
-const avatarSubject = computed(() => {
-  if (props.item.owner.avatar_url === undefined) {
-    return "Not found";
-  }
-});
 </script>
 <template>
   <div class="card__container">

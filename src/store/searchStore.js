@@ -13,21 +13,10 @@ export const useSearchStore = defineStore("search", {
       searchQuery: "",
     };
   },
-  getters: {
-    // pageCount() {
-    //   return Math.ceil(this.items.length / this.perPage);
-    // },
-    // paginatedItems() {
-    //   const start = (this.currentPage - 1) * this.perPage;
-    //   const end = start + this.perPage;
-    //   return this.items.slice(start, end);
-    // },
-  },
+
   actions: {
     async loadRepositories() {
       try {
-        // const start = (this.currentPage - 1) * this.perPage;
-        // const end = start + this.perPage;
         const response = await axios.get(
           `${API_URL}?q=${
             this.searchQuery.length > 0 ? this.searchQuery : "subject"
@@ -37,7 +26,6 @@ export const useSearchStore = defineStore("search", {
         console.log(response.data.items);
         this.items = response.data.items;
         this.total_count = response.data.total_count;
-        // this.currentPage++;
         console.log(this.total_count);
       } catch (error) {
         console.log(error);
