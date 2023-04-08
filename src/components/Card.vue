@@ -1,5 +1,5 @@
 <script setup>
-import { computed } from "@vue/reactivity";
+import { ref } from "vue";
 import star from "../assets/star.svg";
 import eay from "../assets/eay.svg";
 import pencil from "../assets/pencil.svg";
@@ -7,11 +7,34 @@ import pencil from "../assets/pencil.svg";
 const props = defineProps({
   item: { type: Object, required: true },
 });
+
+const emit = defineEmits(["submitComment"]);
+
+const comment = ref("");
+
+function addComment() {
+  emit("submitComment", {
+    repo_id: props.item.id,
+    comment: comment.value,
+  });
+  comment.value = "";
+}
 </script>
 <template>
   <div class="card__container">
     <div class="card__wrapper">
-      <h2 class="wrapper__title">{{ props.item.name }}</h2>
+      <h2 class="wrapper__title">
+        <a
+          class="wrapper_url"
+          :href="props.item.owner.html_url"
+          target="_blank"
+          title="посмотреть GitHub пользователя"
+        >
+          <span>
+            {{ props.item.name }}
+          </span>
+        </a>
+      </h2>
       <div class="wrapper__avatar">
         <img
           class="avatar__img"
@@ -28,11 +51,12 @@ const props = defineProps({
       </div>
       <div class="wrapper__comments">
         <input
+          v-model="comment"
           class="comments__input"
           type="text"
           placeholder="Комментарий к проекту"
         />
-        <button class="comments__btn">
+        <button class="comments__btn" @click="addComment">
           <img class="comments__img" :src="pencil" alt="pencil" />
         </button>
       </div>
@@ -41,6 +65,13 @@ const props = defineProps({
 </template>
 
 <style lang="css" scoped>
+.wrapper_url {
+  text-decoration: none;
+  color: black;
+}
+.wrapper_url:hover {
+  color: #00a3ff;
+}
 .wrapper__watches {
   display: flex;
   align-items: center;

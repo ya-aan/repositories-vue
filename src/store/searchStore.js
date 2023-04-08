@@ -22,11 +22,14 @@ export const useSearchStore = defineStore("search", {
             this.searchQuery.length > 0 ? this.searchQuery : "subject"
           }&per_page=${this.perPage}&page=${this.currentPage}`
         );
-        console.log(response);
-        console.log(response.data.items);
-        this.items = response.data.items;
+
+        this.items = response.data.items.map((el) => {
+          return {
+            localComments: [],
+            ...el,
+          };
+        });
         this.total_count = response.data.total_count;
-        console.log(this.total_count);
       } catch (error) {
         console.log(error);
       }
@@ -39,11 +42,8 @@ export const useSearchStore = defineStore("search", {
             this.searchQuery.length > 0 ? this.searchQuery : "subject"
           }&per_page=${this.perPage}&page=${this.currentPage}`
         );
-        console.log(response);
-        console.log(response.data.items);
         this.items = [...this.items, ...response.data.items];
         this.total_count = response.data.total_count;
-        console.log(this.total_count);
       } catch (error) {
         console.log(error);
       }

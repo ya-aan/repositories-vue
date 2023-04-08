@@ -16,6 +16,20 @@ async function loadPage() {
   await searchStore.loadMoreRepositories();
 }
 
+function savedComment(payload) {
+  let resComment = localStorage.getItem("localComment");
+  if (resComment === null) {
+    resComment = {
+      comments: [payload],
+    };
+    localStorage.setItem("localComment", JSON.stringify(resComment));
+  } else {
+    let localComment = JSON.parse(localStorage.getItem("localComment"));
+    localComment.comments.push(payload);
+    localStorage.setItem("localComment", JSON.stringify(localComment));
+  }
+}
+
 onMounted(async () => {
   searchStore.loadRepositories();
 });
@@ -27,7 +41,12 @@ onMounted(async () => {
     <div
       style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 30px"
     >
-      <Card v-for="item in searchStore.items" :key="item.id" :item="item" />
+      <Card
+        v-for="item in searchStore.items"
+        :key="item.id"
+        :item="item"
+        @submit-comment="savedComment"
+      />
     </div>
 
     <button @click="loadPage" class="downBtn">
