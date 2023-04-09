@@ -16,18 +16,8 @@ async function loadPage() {
   await searchStore.loadMoreRepositories();
 }
 
-function savedComment(payload) {
-  let resComment = localStorage.getItem("localComment");
-  if (resComment === null) {
-    resComment = {
-      comments: [payload],
-    };
-    localStorage.setItem("localComment", JSON.stringify(resComment));
-  } else {
-    let localComment = JSON.parse(localStorage.getItem("localComment"));
-    localComment.comments.push(payload);
-    localStorage.setItem("localComment", JSON.stringify(localComment));
-  }
+async function savedComment(payload) {
+  await searchStore.saveComments(payload);
 }
 
 onMounted(async () => {

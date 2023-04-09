@@ -15,7 +15,7 @@ const comment = ref("");
 function addComment() {
   emit("submitComment", {
     repo_id: props.item.id,
-    comment: comment.value,
+    content: comment.value,
   });
   comment.value = "";
 }
@@ -59,6 +59,11 @@ function addComment() {
         <button class="comments__btn" @click="addComment">
           <img class="comments__img" :src="pencil" alt="pencil" />
         </button>
+      </div>
+      <div class="wrapper__comments__block">
+        <span v-for="comment in item.localComments" :key="comment.repo_id">
+          {{ comment.content }}
+        </span>
       </div>
     </div>
   </div>
@@ -112,5 +117,11 @@ function addComment() {
   background-color: #00a3ff;
   cursor: pointer;
   height: 54px;
+}
+
+.wrapper__comments__block {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 </style>

@@ -16,6 +16,13 @@ export const useSearchStore = defineStore("search", {
 
   actions: {
     async loadRepositories() {
+      const jsonComments = localStorage.getItem("localComment");
+      const doseCommentExit = jsonComments !== null;
+      let comments = [];
+      if (doseCommentExit) {
+        let commentObject = JSON.parse(jsonComments);
+        comments = commentObject.comments;
+      }
       try {
         const response = await axios.get(
           `${API_URL}?q=${
@@ -24,8 +31,11 @@ export const useSearchStore = defineStore("search", {
         );
 
         this.items = response.data.items.map((el) => {
+          let foundComments = comments.filter((x) => {
+            return el.id === x.repo_id;
+          });
           return {
-            localComments: [],
+            localComments: foundComments,
             ...el,
           };
         });
@@ -47,6 +57,24 @@ export const useSearchStore = defineStore("search", {
       } catch (error) {
         console.log(error);
       }
+    },
+
+    async saveComments(payload) {
+      let resComment = localStorage.getItem("localComment");
+      if (resComment === null) {
+        resComment = {
+          comments: [payload],
+        };
+        localStorage.setItem("localComment", JSON.stringify(resComment));
+      } else {
+        let localComment = JSON.parse(localStorage.getItem("localComment"));
+        localComment.comments.push(payload);
+        localStorage.setItem("localComment", JSON.stringify(localComment));
+      }
+      const foundRepository = this.items.find((item) => {
+        return item.id === payload.repo_id;
+      });
+      foundRepository.localComments.push(payload);
     },
   },
 });
